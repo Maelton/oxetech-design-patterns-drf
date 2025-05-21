@@ -8,5 +8,5 @@ class Supplier(models.Model):
     phone = models.CharField()
     address = models.CharField()
     is_active = models.BooleanField()
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now = True)
