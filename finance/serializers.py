@@ -1,4 +1,4 @@
-from .models import Supplier, SupplierCategory
+from finance.models.supplier import Supplier, SupplierCategory
 from rest_framework import serializers
 
 class SupplierSerializer(serializers.ModelSerializer):
