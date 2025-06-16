@@ -9,4 +9,4 @@ def add(x, y):
 
 @shared_task
 def send_email(email):
-    return False
+    return "Suppliers were successfully imported!"
