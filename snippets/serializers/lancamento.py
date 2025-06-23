@@ -29,7 +29,23 @@ class LancamentoSerializer(serializers.ModelSerializer):
             Repetição do lançamento, com 30 dias de diferença entre cada repetição.
             """
             
-            pass
+            from datetime import timedelta
+            
+            outstanding_amount = previous_transaction.valor - previous_transaction.valor_efetivo;
+            
+            new_transaction = Lancamento.objects.create(
+                descricao=previous_transaction.descricao,
+                forma_pagamento=previous_transaction.forma_pagamento,
+                tipo=previous_transaction.tipo,
+                categoria=previous_transaction.categoria,
+                valor=outstanding_amount,
+                valor_efetivado=None,
+                vencimento=previous_transaction.vencimento + timedelta(days=30),
+                data_efetivacao=None,
+                fornecedor=previous_transaction.fornecedor,
+            )
+
+            return new_transaction
 
         valor = attrs['valor']
         valor_efetivado = attrs['valor_efetivado']
