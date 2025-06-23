@@ -4,6 +4,10 @@ from snippets.models.fornecedor import (
     Cidade,
     Fornecedor
 )
+from snippets.models.lancamento import (
+    FormaPagamento,
+    Categoria
+)
 
 class EstadoAdmin(admin.ModelAdmin):
     
@@ -21,6 +25,20 @@ class FornecedorAdmin(admin.ModelAdmin):
         model = Fornecedor
         
 
+class FormaPagamentoAdmin(admin.ModelAdmin):
+    
+    class Meta:
+        model = FormaPagamento
+        
+        
+class CategoriaAdmin(admin.ModelAdmin):
+    
+    class Meta:
+        model = Categoria
+
+
 admin.site.register(Estado, EstadoAdmin)
 admin.site.register(Cidade, CidadeAdmin)
 admin.site.register(Fornecedor, FornecedorAdmin)
+admin.site.register(FormaPagamento, FormaPagamentoAdmin)
+admin.site.register(Categoria, CategoriaAdmin)
