@@ -18,6 +18,20 @@ class LancamentoSerializer(serializers.ModelSerializer):
             
             return amount >= 0 and effective_amount >= 0;
 
+        valor = attrs['valor']
+        valor_efetivado = attrs['valor_efetivado']
+        vencimento = attrs['vencimento'];
+        data_efetivacao = attrs['data_efetivacao'];
+
+        if not validate_effective_date(vencimento, data_efetivacao):            
+            raise serializers.ValidationError("Invalid transaction dates");
+
+        if not validate_transaction_amounts(valor, valor_efetivado):
+            raise serializers.ValidationError("Invalid transaction amounts");
+        
+        return attrs;
+    
+    def create(self, validated_data):        
         def duplicate_transaction(previous_transaction):
             """
             Quando o valor_efetivado for menor que o valor deve-se
@@ -31,7 +45,7 @@ class LancamentoSerializer(serializers.ModelSerializer):
             
             from datetime import timedelta
             
-            outstanding_amount = previous_transaction.valor - previous_transaction.valor_efetivo;
+            outstanding_amount = previous_transaction.valor - previous_transaction.valor_efetivado;
             
             new_transaction = Lancamento.objects.create(
                 descricao=previous_transaction.descricao,
@@ -43,22 +57,13 @@ class LancamentoSerializer(serializers.ModelSerializer):
                 vencimento=previous_transaction.vencimento + timedelta(days=30),
                 data_efetivacao=None,
                 fornecedor=previous_transaction.fornecedor,
-            )
+            );
 
-            return new_transaction
+            return new_transaction;
 
-        valor = attrs['valor']
-        valor_efetivado = attrs['valor_efetivado']
-        vencimento = attrs['vencimento'];
-        data_efetivacao = attrs['data_efetivacao'];
-
-        if not validate_effective_date(vencimento, data_efetivacao):            
-            raise serializers.ValidationError("Invalid transaction dates");
-
-        if not validate_transaction_amounts(valor, valor_efetivado):
-            raise serializers.ValidationError("Invalid transaction amounts");
-
-        if valor_efetivado and valor_efetivado < valor:
-            duplicate_transaction();
+        instance = super().create(validated_data);
         
-        return attrs
+        if instance.valor_efetivado and instance.valor_efetivado < instance.valor:
+            duplicate_transaction(instance);
+
+        return instance;
