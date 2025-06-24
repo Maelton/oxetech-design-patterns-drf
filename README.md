@@ -1,7 +1,6 @@
-# Design Patterns Course using Python and DRF at [OxeTech Lab](https://oxetech.al.gov.br/)
+O que ficou da última aula:
+- Realizar uma carga de fornecedores lendo uma planilha (deve usar o comando customizado do Django)
+- Enviar e-mail quando for concluído o processamento
+- O envio deve ocorrer através do Celery
 
-# References
-
-- [Personal Drafts and Notes (on Notion)](https://curly-botany-8fc.notion.site/Padr-es-de-Projeto-Django-DRF-1f255f15790580139b83fd85601ab515)
-
-- [Django Rest Framework - Tutorial 1: Serialization](https://www.django-rest-framework.org/tutorial/1-serialization/)
+Pontos atenção: funções de bulk para não demorar com o processamento, função get_or_create para não duplicar fornecedores, limpar e tratar os dados da planilha
